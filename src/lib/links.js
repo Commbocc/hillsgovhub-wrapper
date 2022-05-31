@@ -22,9 +22,11 @@ export const fetchNavLinks = async (filterEnv) => {
     return {
       id,
       ...fields,
+      href: prependInstaceToHref(fields),
       children: childData.records.map(({ id, fields }) => ({
         id,
         ...fields,
+        href: prependInstaceToHref(fields),
       })),
     }
   })
@@ -43,6 +45,7 @@ export const fetchFooterLinks = async (filterEnv) => {
   return data.records.map(({ id, fields }) => ({
     id,
     ...fields,
+    href: prependInstaceToHref(fields),
   }))
 }
 
@@ -57,5 +60,16 @@ export const fetchSocialLinks = async (filterEnv) => {
   return data.records.map(({ id, fields }) => ({
     id,
     ...fields,
+    href: prependInstaceToHref(fields),
   }))
+}
+
+/**
+ *
+ */
+function prependInstaceToHref({ PREPEND_INSTANCE, href }) {
+  const [instance] = window.location.pathname.split('/').filter(Boolean) || [
+    'hcfl',
+  ]
+  return PREPEND_INSTANCE ? `/${instance}` + href : href
 }
